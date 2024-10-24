@@ -1,0 +1,86 @@
+<odoo>
+    <data>
+        <record id="view_my_project_tree" model="ir.ui.view">
+            <field name="name">my.project.tree</field>
+            <field name="model">my_project.project</field>
+            <field name="arch" type="xml">
+                <tree string="Projects">
+                    <field name="name"/>
+                    <!-- <field name="sequence"/> -->
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="state"/>
+                    <field name="task_count" string="Tasks Count" readonly="1"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_task_tree" model="ir.ui.view">
+            <field name="name">task.tree.view</field>
+            <field name="model">my_project.task</field>
+            <field name="arch" type="xml">
+                <tree string="Tasks">
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="state" widget="statusbar" options="{'horizontal': True}"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_my_project_form" model="ir.ui.view">
+            <field name="name">my.project.form</field>
+            <field name="model">my_project.project</field>
+            <field name="arch" type="xml">
+                <form string="Project">
+                    <header>
+                        <button name="action_unlink" type="object" string="Delete" states="draft" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,completed"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" required="1"/>
+                                <field name="description"/>
+                                <field name="user_id" string="Project Manager"/>
+                                <field name="task_count" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="start_date" widget="date"/>
+                                <field name="end_date" widget="date"/>
+                                <!-- <field name="sequence"/> -->
+                                <!-- <field name="active"/> -->
+                            </group>
+                        </group>
+                        <group>
+                            <field name="label_tasks"/>
+                            <field name="task_ids" widget="one2many_list" options="{'create': True, 'tree_view_id': 'view_task_tree'}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_my_project" model="ir.actions.act_window">
+            <field name="name">Projects</field>
+            <field name="res_model">my_project.project</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_my_project_tree"/>
+        </record>
+
+        <record id="action_my_task" model="ir.actions.act_window">
+            <field name="name">Tasks</field>
+            <field name="res_model">my_project.task</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_my_task_root" name="My Tasks" sequence="20" parent="menu_my_project_root" action="action_my_task"/>
+
+
+        <menuitem id="menu_my_project_root" name="My Projects" sequence="10"/>
+        <menuitem id="menu_my_project" name="Projects" parent="menu_my_project_root" action="action_my_project" sequence="10"/>
+
+
+
+    </data>
+</odoo>
