@@ -10,6 +10,7 @@
     'data': [
         'security/my_project_security.xml',
         'security/ir.model.access.csv',
+        'security/record_rule.xml',
         'views/my_project_views.xml',
     ],
     'demo': ['data/project_demo.xml'],
